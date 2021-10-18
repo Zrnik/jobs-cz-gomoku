@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{37A93500-C66A-4D51-8FF1-0233D1148B64}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>gomoku</RootNamespace>
+    <AssemblyName>gomoku</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.12.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>packages\RestSharp.106.12.0\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controller.cs" />
+    <Compile Include="Misc\GamePool\GamePool.cs" />
+    <Compile Include="Game\InputType\BaseInputType.cs" />
+    <Compile Include="Game\InputType\Types\AI.cs" />
+    <Compile Include="Game\InputType\Types\JobsCzAPI.cs" />
+    <Compile Include="Game\InputType\Types\Manual.cs" />
+    <Compile Include="Game\Player\BasePlayer.cs" />
+    <Compile Include="Game\Player\Circle.cs" />
+    <Compile Include="Game\Player\Cross.cs" />
+    <Compile Include="Game\Positioning\Field.cs" />
+    <Compile Include="Game\Positioning\GameLoc.cs" />
+    <Compile Include="Game\Positioning\GameLocMeta.cs" />
+    <Compile Include="Game\Positioning\XY.cs" />
+    <Compile Include="Game\StateChangedEventArgs.cs" />
+    <Compile Include="GUI\GomokuBoard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\GomokuBoard.Designer.cs">
+      <DependentUpon>GomokuBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="JobsAPI\Connector.cs" />
+    <Compile Include="JobsAPI\Entities\EndpointAttribute.cs" />
+    <Compile Include="JobsAPI\Entities\Error.cs" />
+    <Compile Include="JobsAPI\Entities\Game\CheckStatus.cs" />
+    <Compile Include="JobsAPI\Entities\Game\Connect.cs" />
+    <Compile Include="JobsAPI\Entities\Game\Play.cs" />
+    <Compile Include="JobsAPI\Entities\RequestEntity.cs" />
+    <Compile Include="JobsAPI\Entities\ResponseEntity.cs" />
+    <Compile Include="JobsAPI\Entities\Responses\GameInfo.cs" />
+    <Compile Include="JobsAPI\Entities\Responses\GameStatus.cs" />
+    <Compile Include="JobsAPI\Entities\Responses\Subs\Move.cs" />
+    <Compile Include="JobsAPI\Jobs.cs" />
+    <Compile Include="Misc\GamePool\GameThread.cs" />
+    <Compile Include="Misc\GamePool\OpponentAFKException.cs" />
+    <Compile Include="Shuffler.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Game\State.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="example_game.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GUI\GomokuBoard.resx">
+      <DependentUpon>GomokuBoard.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
