@@ -35,24 +35,47 @@ namespace gomoku.Game.InputType.Types
 
             bool isAIMove = status.actualPlayerId == Jobs.UserId();
 
-            if (isAIMove) {
+            if (isAIMove && state.Field.GetLastMove() != null) {
                 status = Jobs.Play(state.Field.GetLastMove(), gameInfo);
             }
 
             Stopwatch s = new Stopwatch();
             while (true)
             {
-                isAIMove = status.actualPlayerId == Jobs.UserId();
+                if (status != null) { 
+                
+                    isAIMove = status.actualPlayerId == Jobs.UserId();
 
-                if (isAIMove)
-                {      
-                    return GameLoc.FromMove(status.coordinates[0]);
+                    if (status.isCompleted) {
+
+                        /**/
+
+                        if (status.winnerId == Jobs.UserId())
+                        {
+                            throw new WinnerAlreadyResolvedException(player);
+                        }
+                        else
+                        {
+                            foreach (BasePlayer possibleWinner in state.Players)
+                            {
+                                if (!BasePlayer.IsSame(possibleWinner, player))
+                                {
+                                    throw new WinnerAlreadyResolvedException(possibleWinner);
+                                }
+                            }
+                        }
+                    }
+
+                    if (isAIMove && status.coordinates.Length != 0)
+                    {
+                        return GameLoc.FromMove(status.coordinates[0]);
+                    }
+
+                    if (s.ElapsedMilliseconds > 2 *60 * 1000) {
+                        throw new OpponentAFKException();
+                    }
+
                 }
-
-                if (s.ElapsedMilliseconds > 2 *60 * 1000) {
-                    throw new OpponentAFKException();
-                }
-
                 Thread.Sleep(1000);
                 status = Jobs.GameStatus(gameInfo);
             }

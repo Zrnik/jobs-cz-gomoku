@@ -28,18 +28,21 @@ namespace gomoku.Misc.GamePool
 
         internal void Run(int threadAmount, int totalGames)
         {
-            if (gameType == GameType.Manual) {
+            if (gameType == GameType.Manual)
+            {
                 threadAmount = 1;
             }
 
             int activeGames = ActiveThreadAmount();
 
-            while (activeGames > 0 || GameThreads.Count < totalGames) {
+            while (activeGames > 0 || GameThreads.Count < totalGames)
+            {
 
                 activeGames = ActiveThreadAmount();
 
-                if (activeGames < threadAmount && GameThreads.Count < totalGames) {
-                                                        
+                if (activeGames < threadAmount && GameThreads.Count < totalGames)
+                {
+
                     int index = GameThreads.Count;
 
                     GameThread thread = new GameThread(index);
@@ -83,12 +86,13 @@ namespace gomoku.Misc.GamePool
 
         }
 
-     
+
 
         private int ActiveThreadAmount()
         {
             int amount = 0;
-            foreach (GameThread Thread in GameThreads) {
+            foreach (GameThread Thread in GameThreads)
+            {
                 if (Thread.Running())
                 {
                     amount++;
@@ -109,7 +113,8 @@ namespace gomoku.Misc.GamePool
             }
             GameInfo game = Jobs.CreateGame();
 
-            if (game == null) {
+            if (game == null)
+            {
                 if (DisplayMessages)
                 {
                     JobsGameError("Unable to create game!");
@@ -131,8 +136,11 @@ namespace gomoku.Misc.GamePool
                 Console.WriteLine("== == == == == == == == == == == == ==");
                 Console.WriteLine("== Waiting for oponent! ");
             }
-            else {
-                Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " | Game #" + index+" is waiting for opponent! ("+ game.gameId+")");
+            else
+            {
+                Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " | Game #" + index + " is waiting for opponent! (" + game.gameId + ")");
+
+                Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " | Token: " + game.gameToken);
             }
 
             GameStatus gs = Jobs.GameStatus(game);
@@ -156,7 +164,8 @@ namespace gomoku.Misc.GamePool
             bool AmICross = gs.playerCrossId == Jobs.UserId();
             string oponentId = (AmICross ? gs.playerCircleId : gs.playerCrossId);
 
-            if (DisplayMessages) {
+            if (DisplayMessages)
+            {
                 Console.WriteLine("== oponentId: " + oponentId);
                 Console.WriteLine("== == == == == == == == == == == == ==");
             }
@@ -169,7 +178,7 @@ namespace gomoku.Misc.GamePool
             {
                 BasePlayer cross = controller.AddPlayer(new Cross(new AI()));
                 BasePlayer circle = controller.AddPlayer(new Circle(new JobsCzAPI(game, oponentId)));
-              
+
 
                 playerLabel = cross.Label();
             }

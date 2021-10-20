@@ -117,7 +117,9 @@ namespace gomoku.GUI
 
         internal void InvokeClose()
         {
-            Invoke(new Action(()=> { this.Close(); }));
+            if (this.Visible) {             
+                Invoke(new Action(()=> { this.Close(); }));
+            }
         }
 
         #region InitializeSize

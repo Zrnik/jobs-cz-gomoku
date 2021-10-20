@@ -50,12 +50,20 @@ namespace gomoku.JobsAPI
                             "userToken": "e895a4af-19f7-4f08-9b5c-d20039f86191",
                             "headers": {}
                         }
+                    	
+                        Test 2
+                        {
+                          "statusCode": 201,
+                          "userId": "2ff1f8f4-fbf6-4a83-8916-ad802a04edac",
+                          "userToken": "b56e44e6-5dd1-4b34-98b3-901df184f843",
+                          "headers": {}
+                        }
                      *
                      */
 
                     _singletonInstance = new Connector(
-                        "729a5f97-b49b-4176-b843-d9b4f097da20",
-                        "e895a4af-19f7-4f08-9b5c-d20039f86191"
+                        "2ff1f8f4-fbf6-4a83-8916-ad802a04edac",
+                        "b56e44e6-5dd1-4b34-98b3-901df184f843"
                     );
                 }
 

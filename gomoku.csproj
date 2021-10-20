@@ -86,6 +86,7 @@
     <Compile Include="JobsAPI\Jobs.cs" />
     <Compile Include="Misc\GamePool\GameThread.cs" />
     <Compile Include="Misc\GamePool\OpponentAFKException.cs" />
+    <Compile Include="Misc\GamePool\WinnerAlreadyResolvedException.cs" />
     <Compile Include="Shuffler.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Game\State.cs" />

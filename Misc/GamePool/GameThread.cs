@@ -62,8 +62,20 @@ namespace gomoku.Misc.GamePool
 
                 try
                 {
-                    controller.Run(); 
-                    Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " | Game [" + index + "] finished, winner: " + controller.GetState().GetWinner().Label());
+                    controller.Run();
+                    Console.WriteLine(
+                        DateTime.Now.ToString("HH:mm:ss") 
+                        + " | Game [" + index + "] finished, winner: " 
+                        + controller.GetState().GetWinner().Label()
+                    );
+                }
+                catch (WinnerAlreadyResolvedException ex) 
+                {
+                    Console.WriteLine(
+                        DateTime.Now.ToString("HH:mm:ss")
+                        + " | Game [" + index + "] finished, winner: "
+                        + ex.winner.Label()
+                    );
                 }
                 catch (OpponentAFKException)
                 {

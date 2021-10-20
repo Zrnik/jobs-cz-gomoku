@@ -18,7 +18,7 @@ namespace gomoku
 
 
             GamePool gp = new GamePool(GameType.JobsCZ);
-            gp.Run(10, 10);
+            gp.Run(3,9);
         }
     }
 }
