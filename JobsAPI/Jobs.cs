@@ -3,7 +3,6 @@ using gomoku.JobsAPI.Entities;
 using gomoku.JobsAPI.Entities.Game;
 using gomoku.JobsAPI.Entities.Responses;
 using gomoku.JobsAPI.Entities.Responses.Subs;
-using System;
 
 namespace gomoku.JobsAPI
 {

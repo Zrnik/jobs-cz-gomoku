@@ -122,73 +122,71 @@ namespace gomoku.Game.InputType.Types
         {
 
             #region Můžeme-li udělat 'amount' in a row tak aby nakonec bylo možné udělat 5 
-            for (int x = 1; x <= state.Field.SizeX; x++)
+            foreach (XY xy in state.Field.getShuffledLocations())
             {
-                for (int y = 1; y <= state.Field.SizeY; y++)
+                int x = xy.x;
+                int y = xy.y;
+
+                GameLoc checkLoc = GameLoc.Create(x, y);
+                GameLocMeta meta = checkLoc.Meta(state.Field);
+
+                foreach (KeyValuePair<LineType, GameLoc[]> linekv in meta.GetLines())
                 {
-
-                    
-
-                    GameLoc checkLoc = GameLoc.Create(x, y);
-                    GameLocMeta meta = checkLoc.Meta(state.Field);
-
-                    foreach (KeyValuePair<LineType, GameLoc[]> linekv in meta.GetLines())
+                    if (linekv.Value.Length == amount - 1)
                     {
-                        if (linekv.Value.Length == amount - 1)
+                        //If all x are mine: 
+                        bool fullMine = true;
+                        foreach (GameLoc loc in linekv.Value)
                         {
-                            //If all x are mine: 
-                            bool fullMine = true;
-                            foreach (GameLoc loc in linekv.Value)
+                            if (!BasePlayer.IsSame(player, state.Field.Occupant(loc)))
                             {
-                                if (!BasePlayer.IsSame(player, state.Field.Occupant(loc)))
+                                fullMine = false;
+                            }
+                        }
+
+                        if (!fullMine)
+                        {
+                            continue;
+                        }
+
+                        GameLoc[] Expanded = GameLocMeta.RemoveInvalid(GameLocMeta.ExpandLine(linekv.Key, linekv.Value, 2, 2), state.Field);
+
+                        if (Expanded.Length >= 5)
+                        {
+                            //DumpLine("CLOSED Original (len " + (amount - 1) + ")", linekv.Value, state.Field);
+                            //DumpLine("CLOSED Expanded ", Expanded, state.Field);
+
+                            bool minusTwoMineOrEmpty = !state.Field.IsOccuppied(Expanded[0]) || BasePlayer.IsSame(state.Field.Occupant(Expanded[0]), player);
+                            bool minusOneMineOrEmpty = !state.Field.IsOccuppied(Expanded[1]) || BasePlayer.IsSame(state.Field.Occupant(Expanded[1]), player);
+
+                            bool minusTwoEmpty = !state.Field.IsOccuppied(Expanded[0]);
+                            bool minusOneEmpty = !state.Field.IsOccuppied(Expanded[1]);
+
+                            bool plusOneMineOrEmpty = !state.Field.IsOccuppied(Expanded[Expanded.Length - 2]) || BasePlayer.IsSame(state.Field.Occupant(Expanded[Expanded.Length - 2]), player);
+                            bool plusTwoMineOrEmpty = !state.Field.IsOccuppied(Expanded[Expanded.Length - 1]) || BasePlayer.IsSame(state.Field.Occupant(Expanded[Expanded.Length - 1]), player);
+
+                            bool plusOneEmpty = !state.Field.IsOccuppied(Expanded[Expanded.Length - 2]);
+                            bool plusTwoEmpty = !state.Field.IsOccuppied(Expanded[Expanded.Length - 1]);
+
+                            int possibleLength = linekv.Value.Length;
+
+                            if (minusOneMineOrEmpty) { possibleLength++; }
+                            if (minusOneMineOrEmpty && minusTwoMineOrEmpty) { possibleLength++; }
+
+                            if (plusOneMineOrEmpty) { possibleLength++; }
+                            if (plusOneMineOrEmpty && plusTwoMineOrEmpty) { possibleLength++; }
+
+                            if (possibleLength >= 5)
+                            {
+
+                                if (minusOneEmpty && minusTwoEmpty)
                                 {
-                                    fullMine = false;
+                                    return Expanded[1];
                                 }
-                            }
 
-                            if (!fullMine)
-                            {
-                                continue;
-                            }
-
-                            GameLoc[] Expanded = GameLocMeta.RemoveInvalid(GameLocMeta.ExpandLine(linekv.Key, linekv.Value, 2, 2), state.Field);
-
-                            if (Expanded.Length >= 5)
-                            {
-                                //DumpLine("CLOSED Original (len " + (amount - 1) + ")", linekv.Value, state.Field);
-                                //DumpLine("CLOSED Expanded ", Expanded, state.Field);
-
-                                bool minusTwoMineOrEmpty = !state.Field.IsOccuppied(Expanded[0]) || BasePlayer.IsSame(state.Field.Occupant(Expanded[0]), player);
-                                bool minusOneMineOrEmpty = !state.Field.IsOccuppied(Expanded[1]) || BasePlayer.IsSame(state.Field.Occupant(Expanded[1]), player);
-
-                                bool minusTwoEmpty = !state.Field.IsOccuppied(Expanded[0]);
-                                bool minusOneEmpty = !state.Field.IsOccuppied(Expanded[1]);
-
-                                bool plusOneMineOrEmpty = !state.Field.IsOccuppied(Expanded[Expanded.Length - 2]) || BasePlayer.IsSame(state.Field.Occupant(Expanded[Expanded.Length - 2]), player);
-                                bool plusTwoMineOrEmpty = !state.Field.IsOccuppied(Expanded[Expanded.Length - 1]) || BasePlayer.IsSame(state.Field.Occupant(Expanded[Expanded.Length - 1]), player);
-
-                                bool plusOneEmpty = !state.Field.IsOccuppied(Expanded[Expanded.Length - 2]);
-                                bool plusTwoEmpty = !state.Field.IsOccuppied(Expanded[Expanded.Length - 1]);
-
-                                int possibleLength = linekv.Value.Length;
-
-                                if (minusOneMineOrEmpty) { possibleLength++; }
-                                if (minusOneMineOrEmpty && minusTwoMineOrEmpty) { possibleLength++; }
-
-                                if (plusOneMineOrEmpty) { possibleLength++; }
-                                if (plusOneMineOrEmpty && plusTwoMineOrEmpty) { possibleLength++; }
-
-                                if (possibleLength >= 5) {
-
-                                    if (minusOneEmpty && minusTwoEmpty)
-                                    {
-                                        return Expanded[1];
-                                    }
-
-                                    if (plusOneEmpty && plusTwoEmpty)
-                                    {
-                                        return Expanded[Expanded.Length - 2];
-                                    }
+                                if (plusOneEmpty && plusTwoEmpty)
+                                {
+                                    return Expanded[Expanded.Length - 2];
                                 }
                             }
                         }
@@ -208,91 +206,92 @@ namespace gomoku.Game.InputType.Types
         {
 
             #region Můžeme-li udělat 'amount' in a row tak aby nakonec bylo možné udělat 'amount + 1' 
-            for (int x = 1; x <= state.Field.SizeX; x++)
-            {
-                for (int y = 1; y <= state.Field.SizeY; y++)
-                {
-                    GameLoc checkLoc = GameLoc.Create(x, y);
-                    GameLocMeta meta = checkLoc.Meta(state.Field);
 
-                    foreach (KeyValuePair<LineType, GameLoc[]> linekv in meta.GetLines())
+            foreach (XY xy in state.Field.getShuffledLocations())
+            {
+                int x = xy.x;
+                int y = xy.y;
+
+                GameLoc checkLoc = GameLoc.Create(x, y);
+                GameLocMeta meta = checkLoc.Meta(state.Field);
+
+                foreach (KeyValuePair<LineType, GameLoc[]> linekv in meta.GetLines())
+                {
+
+                    if (linekv.Value.Length == amount - 1)
                     {
 
-                        if (linekv.Value.Length == amount - 1)
+                        //If all x are mine: 
+                        bool fullMine = true;
+                        foreach (GameLoc loc in linekv.Value)
                         {
-
-                            //If all x are mine: 
-                            bool fullMine = true;
-                            foreach (GameLoc loc in linekv.Value)
+                            if (!BasePlayer.IsSame(player, state.Field.Occupant(loc)))
                             {
-                                if (!BasePlayer.IsSame(player, state.Field.Occupant(loc)))
-                                {
-                                    fullMine = false;
-                                }
+                                fullMine = false;
+                            }
+                        }
+
+                        if (!fullMine)
+                        {
+                            continue;
+                        }
+
+                        int requiredExpanded = amount - 1 + 6;
+
+
+                        //DumpLine("Original (len " + (amount - 1) + ")", linekv.Value, state.Field);
+                        GameLoc[] Expanded = GameLocMeta.RemoveInvalid(GameLocMeta.ExpandLine(linekv.Key, linekv.Value, 3, 3), state.Field);
+                        //DumpLine("Expanded (possible " + requiredExpanded + ")", Expanded, state.Field);
+
+                        if (Expanded.Length == requiredExpanded)
+                        {
+                            GameLoc MinusThree = Expanded[0];
+                            GameLoc MinusTwo = Expanded[1];
+                            GameLoc MinusOne = Expanded[2];
+
+                            GameLoc PlusOne = Expanded[Expanded.Length - 3];
+                            GameLoc PlusTwo = Expanded[Expanded.Length - 2];
+                            GameLoc PlusThree = Expanded[Expanded.Length - 1];
+
+                            bool MinusTwoOccupied = state.Field.IsOccuppied(MinusTwo);
+                            bool MinusOneOccupied = state.Field.IsOccuppied(MinusOne);
+                            bool MinusThreeOccupied = state.Field.IsOccuppied(MinusThree);
+
+                            bool MinusTwoMine = MinusTwoOccupied && BasePlayer.IsSame(player, state.Field.Occupant(MinusTwo));
+                            bool MinusOneMine = MinusOneOccupied && BasePlayer.IsSame(player, state.Field.Occupant(MinusOne));
+                            bool MinusThreeMine = MinusThreeOccupied && BasePlayer.IsSame(player, state.Field.Occupant(MinusThree));
+
+                            bool PlusOneOccupied = state.Field.IsOccuppied(PlusOne);
+                            bool PlusTwoOccupied = state.Field.IsOccuppied(PlusTwo);
+                            bool PlusThreeOccupied = state.Field.IsOccuppied(PlusThree);
+
+                            bool PlusOneMine = PlusOneOccupied && BasePlayer.IsSame(player, state.Field.Occupant(PlusOne));
+                            bool PlusTwoMine = PlusTwoOccupied && BasePlayer.IsSame(player, state.Field.Occupant(PlusTwo));
+                            bool PlusThreeMine = PlusThreeOccupied && BasePlayer.IsSame(player, state.Field.Occupant(PlusThree));
+
+
+                            // Winning Moves:
+                            if (!MinusTwoOccupied && !MinusOneOccupied && !PlusOneOccupied)
+                            {
+                                return MinusOne;
                             }
 
-                            if (!fullMine)
+                            if (!MinusOneOccupied && !PlusOneOccupied && !PlusTwoOccupied)
                             {
-                                continue;
+                                return PlusOne;
                             }
 
-                            int requiredExpanded = amount - 1 + 6;
-
-
-                            //DumpLine("Original (len " + (amount - 1) + ")", linekv.Value, state.Field);
-                            GameLoc[] Expanded = GameLocMeta.RemoveInvalid(GameLocMeta.ExpandLine(linekv.Key, linekv.Value, 3, 3), state.Field);
-                            //DumpLine("Expanded (possible " + requiredExpanded + ")", Expanded, state.Field);
-
-                            if (Expanded.Length == requiredExpanded)
+                            // Gaps
+                            if (!PlusOneOccupied && PlusTwoMine && (!PlusThreeOccupied || PlusThreeMine))
                             {
-                                GameLoc MinusThree = Expanded[0];
-                                GameLoc MinusTwo = Expanded[1];
-                                GameLoc MinusOne = Expanded[2];
-
-                                GameLoc PlusOne = Expanded[Expanded.Length - 3];
-                                GameLoc PlusTwo = Expanded[Expanded.Length - 2];
-                                GameLoc PlusThree = Expanded[Expanded.Length - 1];
-
-                                bool MinusTwoOccupied = state.Field.IsOccuppied(MinusTwo);
-                                bool MinusOneOccupied = state.Field.IsOccuppied(MinusOne);
-                                bool MinusThreeOccupied = state.Field.IsOccuppied(MinusThree);
-
-                                bool MinusTwoMine = MinusTwoOccupied && BasePlayer.IsSame(player, state.Field.Occupant(MinusTwo));
-                                bool MinusOneMine = MinusOneOccupied && BasePlayer.IsSame(player, state.Field.Occupant(MinusOne));
-                                bool MinusThreeMine = MinusThreeOccupied && BasePlayer.IsSame(player, state.Field.Occupant(MinusThree));
-
-                                bool PlusOneOccupied = state.Field.IsOccuppied(PlusOne);
-                                bool PlusTwoOccupied = state.Field.IsOccuppied(PlusTwo);
-                                bool PlusThreeOccupied = state.Field.IsOccuppied(PlusThree);
-
-                                bool PlusOneMine = PlusOneOccupied && BasePlayer.IsSame(player, state.Field.Occupant(PlusOne));
-                                bool PlusTwoMine = PlusTwoOccupied && BasePlayer.IsSame(player, state.Field.Occupant(PlusTwo));
-                                bool PlusThreeMine = PlusThreeOccupied && BasePlayer.IsSame(player, state.Field.Occupant(PlusThree));
-
-
-                                // Winning Moves:
-                                if (!MinusTwoOccupied && !MinusOneOccupied && !PlusOneOccupied)
-                                {
-                                    return MinusOne;
-                                }
-
-                                if (!MinusOneOccupied && !PlusOneOccupied && !PlusTwoOccupied)
-                                {
-                                    return PlusOne;
-                                }
-
-                                // Gaps
-                                if (!PlusOneOccupied && PlusTwoMine && (!PlusThreeOccupied || PlusThreeMine))
-                                {
-                                    return PlusOne;
-                                }
-
-                                if (!MinusOneOccupied && MinusTwoMine && (!MinusThreeOccupied || MinusThreeMine))
-                                {
-                                    return MinusOne;
-                                }
-
+                                return PlusOne;
                             }
+
+                            if (!MinusOneOccupied && MinusTwoMine && (!MinusThreeOccupied || MinusThreeMine))
+                            {
+                                return MinusOne;
+                            }
+
                         }
                     }
                 }
@@ -373,10 +372,11 @@ namespace gomoku.Game.InputType.Types
             {
                 for (int y = loc.Y - radius; y <= loc.Y + radius; y++)
                 {
-                    GameLoc checkLoc = GameLoc.Create(x,y);
+                    GameLoc checkLoc = GameLoc.Create(x, y);
 
                     // Skip invalid
-                    if (!state.Field.IsValid(loc)) {
+                    if (!state.Field.IsValid(loc))
+                    {
                         continue;
                     }
 
@@ -394,28 +394,7 @@ namespace gomoku.Game.InputType.Types
                 }
             }
 
-
-                    /*for (int x = 1; x <= state.Field.SizeX; x++)
-                    {
-                        for (int y = 1; y <= state.Field.SizeY; y++)
-                        {
-
-
-                            // Střed vynecháme!
-                            if (x == loc.X && y == loc.Y)
-                            {
-                                continue;
-                            }
-
-                            if (state.Field.Occupant(GameLoc.Create(x, y)) != null)
-                            {
-                                return true;
-                            }
-
-                        }
-                    }*/
-
-                    return false;
+            return false;
         }
     }
 }

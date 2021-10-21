@@ -17,8 +17,8 @@ namespace gomoku
             Console.WriteLine("====================================================================");
 
 
-            GamePool gp = new GamePool(GameType.JobsCZ);
-            gp.Run(3,3);
+            GamePool gp = new GamePool(GameType.JobsCZ, true);
+            gp.Run(1,250);
         }
     }
 }

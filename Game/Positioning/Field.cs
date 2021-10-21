@@ -133,5 +133,33 @@ namespace gomoku.Game.Positioning
 
             return false;
         }
+
+
+        /**
+         * Aby AI vs. AI  hry byly trocku rozmanite.
+         * Nyni je nahodny jen ten prvni tah kolecka a pak 
+         * uz je vse deterministicke. Takze existuje jen 8 
+         * ruznych vysledku.
+         */
+        public XY[] getShuffledLocations() {
+
+            List<XY> locations = new List<XY>();
+
+            for (int x = 1; x <= SizeX; x++)
+            {
+                for (int y = 1; y <= SizeY; y++)
+                {
+                    locations.Add(new XY()
+                    {
+                        x = x,
+                        y = y
+                    });
+                }
+            }
+
+            locations.Shuffle();
+            return locations.ToArray();        
+        }
+
     }
 }

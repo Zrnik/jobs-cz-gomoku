@@ -46,6 +46,8 @@ namespace gomoku.GUI
 
         private bool Hooked = false;
 
+        public bool CloseAfter = true;
+
         public State State { get; }
 
         public GomokuBoard(State state)
@@ -72,6 +74,7 @@ namespace gomoku.GUI
         {
             InitializeComponent();
 
+            closeAfterCheck.Checked = true;
 
             InitializeSize();
 
@@ -286,9 +289,9 @@ namespace gomoku.GUI
 
         #endregion
 
-        private void gameStatusLabel_Click(object sender, EventArgs e)
+        private void closeAfterCheck_CheckedChanged(object sender, EventArgs e)
         {
-
+            this.CloseAfter = closeAfterCheck.Checked;
         }
     }
 }

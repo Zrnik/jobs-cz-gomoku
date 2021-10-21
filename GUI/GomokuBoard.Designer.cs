@@ -30,40 +30,63 @@ namespace gomoku.GUI
         private void InitializeComponent()
         {
             this.gameStatus = new System.Windows.Forms.StatusStrip();
-            this.buttonPanel = new System.Windows.Forms.Panel();
             this.gameStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.buttonPanel = new System.Windows.Forms.Panel();
+            this.closeAfterCheck = new System.Windows.Forms.CheckBox();
             this.gameStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // gameStatus
             // 
             this.gameStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gameStatusLabel});
-            this.gameStatus.Location = new System.Drawing.Point(0, 195);
+            this.gameStatusLabel,
+            this.toolStripStatusLabel1});
+            this.gameStatus.Location = new System.Drawing.Point(0, 48);
             this.gameStatus.Name = "gameStatus";
-            this.gameStatus.Size = new System.Drawing.Size(604, 22);
+            this.gameStatus.Size = new System.Drawing.Size(214, 22);
             this.gameStatus.TabIndex = 0;
             this.gameStatus.Text = "statusStrip1";
-            // 
-            // buttonPanel
-            // 
-            this.buttonPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonPanel.Location = new System.Drawing.Point(0, 0);
-            this.buttonPanel.Name = "buttonPanel";
-            this.buttonPanel.Size = new System.Drawing.Size(604, 195);
-            this.buttonPanel.TabIndex = 1;
             // 
             // gameStatusLabel
             // 
             this.gameStatusLabel.Name = "gameStatusLabel";
             this.gameStatusLabel.Size = new System.Drawing.Size(0, 17);
-            this.gameStatusLabel.Click += new System.EventHandler(this.gameStatusLabel_Click);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // buttonPanel
+            // 
+            this.buttonPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonPanel.Location = new System.Drawing.Point(0, 0);
+            this.buttonPanel.Name = "buttonPanel";
+            this.buttonPanel.Size = new System.Drawing.Size(214, 27);
+            this.buttonPanel.TabIndex = 1;
+            // 
+            // closeAfterCheck
+            // 
+            this.closeAfterCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.closeAfterCheck.AutoSize = true;
+            this.closeAfterCheck.Location = new System.Drawing.Point(4, 30);
+            this.closeAfterCheck.Name = "closeAfterCheck";
+            this.closeAfterCheck.Size = new System.Drawing.Size(105, 17);
+            this.closeAfterCheck.TabIndex = 2;
+            this.closeAfterCheck.Text = "Close after game";
+            this.closeAfterCheck.UseVisualStyleBackColor = true;
+            this.closeAfterCheck.CheckedChanged += new System.EventHandler(this.closeAfterCheck_CheckedChanged);
             // 
             // GomokuBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 217);
+            this.ClientSize = new System.Drawing.Size(214, 70);
+            this.Controls.Add(this.closeAfterCheck);
             this.Controls.Add(this.buttonPanel);
             this.Controls.Add(this.gameStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -82,5 +105,7 @@ namespace gomoku.GUI
         private System.Windows.Forms.StatusStrip gameStatus;
         private System.Windows.Forms.Panel buttonPanel;
         private System.Windows.Forms.ToolStripStatusLabel gameStatusLabel;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.CheckBox closeAfterCheck;
     }
 }

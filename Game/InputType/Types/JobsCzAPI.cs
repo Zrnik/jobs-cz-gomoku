@@ -71,7 +71,8 @@ namespace gomoku.Game.InputType.Types
                         return GameLoc.FromMove(status.coordinates[0]);
                     }
 
-                    if (s.ElapsedMilliseconds > 15 *60 * 1000) {
+                    // Okay, budu čekat hodinu na tah...
+                    if (s.ElapsedMilliseconds > 60 * 60 * 1000) {
                         throw new OpponentAFKException();
                     }
 
