@@ -58,12 +58,19 @@ namespace gomoku.JobsAPI
                           "userToken": "b56e44e6-5dd1-4b34-98b3-901df184f843",
                           "headers": {}
                         }
+                        // Nickname = link na github:
+                        {
+                          "statusCode": 201,
+                          "userId": "cce9ca3c-e15c-44de-a537-343478d1ed08",
+                          "userToken": "2fc2494c-b9ea-4052-a0e4-ebbb7cc29f79",
+                          "headers": {}
+                        }
                      *
                      */
 
                     _singletonInstance = new Connector(
-                        "2ff1f8f4-fbf6-4a83-8916-ad802a04edac",
-                        "b56e44e6-5dd1-4b34-98b3-901df184f843"
+                        "cce9ca3c-e15c-44de-a537-343478d1ed08",
+                        "2fc2494c-b9ea-4052-a0e4-ebbb7cc29f79"
                     );
                 }
 

@@ -39,7 +39,7 @@ namespace gomoku.Game.InputType.Types
                 status = Jobs.Play(state.Field.GetLastMove(), gameInfo);
             }
 
-            Stopwatch s = new Stopwatch();
+            Stopwatch s = Stopwatch.StartNew();
             while (true)
             {
                 if (status != null) { 
@@ -71,7 +71,7 @@ namespace gomoku.Game.InputType.Types
                         return GameLoc.FromMove(status.coordinates[0]);
                     }
 
-                    if (s.ElapsedMilliseconds > 2 *60 * 1000) {
+                    if (s.ElapsedMilliseconds > 15 *60 * 1000) {
                         throw new OpponentAFKException();
                     }
 
