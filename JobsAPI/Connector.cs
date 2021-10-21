@@ -22,7 +22,7 @@ namespace gomoku.JobsAPI
                 {
 
                     /*
-                     * Registrační ůdaje pro Jobs.cz API
+                     * Registrační údaje pro Jobs.cz API
                      * 
                      *  - tohle má být tajné, ale mě je to šumák :D
                      *  

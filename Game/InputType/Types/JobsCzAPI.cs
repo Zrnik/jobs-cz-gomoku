@@ -48,14 +48,9 @@ namespace gomoku.Game.InputType.Types
 
                     if (status.isCompleted) {
 
-                        /**/
-
                         if (status.winnerId == Jobs.UserId())
                         {
-                            throw new WinnerAlreadyResolvedException(player);
-                        }
-                        else
-                        {
+                            // Vyhrál jsem! Najdu AI a vyhodím ho jako výherce
                             foreach (BasePlayer possibleWinner in state.Players)
                             {
                                 if (!BasePlayer.IsSame(possibleWinner, player))
@@ -63,6 +58,11 @@ namespace gomoku.Game.InputType.Types
                                     throw new WinnerAlreadyResolvedException(possibleWinner);
                                 }
                             }
+                        }
+                        else
+                        {          
+                            // Prohrál jsem, vítězem je jobs.cz
+                            throw new WinnerAlreadyResolvedException(player);                                                         
                         }
                     }
 
