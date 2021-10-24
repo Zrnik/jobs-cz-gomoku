@@ -4,3 +4,5 @@ Tohle je můj pokus na Jobs.cz piškvorky. Dělám to jen na procvičení. Moje 
 
 Výsledky: https://piskvorky.jobs.cz/detail-hrace/cce9ca3c-e15c-44de-a537-343478d1ed08/
 
+Pusť to, mám novou verzi. Chci vidět, jak moc jsem to rozbil :D
+
